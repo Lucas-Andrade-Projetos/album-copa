@@ -8,6 +8,9 @@ def create_app():
 
     os.makedirs(app.instance_path, exist_ok=True)
 
+    from . import database
+    database.init_app(app)
+
     @app.route("/")
     def index():
         return "Hello, World Cup!"
