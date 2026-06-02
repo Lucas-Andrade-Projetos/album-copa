@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Álbum Copa do Mundo{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="{{ url_for('auth.index') }}" class="navbar-brand">⚽ Álbum Copa</a>
+        <div class="navbar-links">
+            {% if current_user.is_authenticated %}
+                <span class="navbar-user">Olá, {{ current_user.username }}</span>
+                <a href="{{ url_for('stickers.album') }}">Meu Álbum</a>
+                {% if current_user.is_admin %}
+                    <a href="#">Admin</a>
+                {% endif %}
+                <a href="{{ url_for('auth.logout') }}" class="btn-logout">Sair</a>
+            {% else %}
+                <a href="{{ url_for('auth.login') }}">Login</a>
+                <a href="{{ url_for('auth.register') }}">Cadastrar</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+</body>
+</html>
