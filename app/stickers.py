@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, jsonify
 from flask_login import login_required, current_user
 from .database import get_db
+from .utils import get_packs_opened_today, draw_stickers, award_stickers, record_pack_opening
+from flask import current_app
 
 bp = Blueprint("stickers", __name__)
 
@@ -33,3 +35,62 @@ def album():
         obtidas=obtidas,
         percent=percent,
     )
+
+
+@bp.route("/api/pack/remaining")
+@login_required
+def pack_remaining():
+    db = get_db()
+    packs_per_day = current_app.config["PACKS_PER_DAY"]
+    abertos_hoje  = get_packs_opened_today(current_user.id, db)
+    restantes     = max(0, packs_per_day - abertos_hoje)
+    return jsonify({"packs_remaining": restantes, "packs_per_day": packs_per_day})
+
+
+@bp.route("/api/pack/open", methods=["POST"])
+@login_required
+def pack_open():
+    db = get_db()
+    packs_per_day    = current_app.config["PACKS_PER_DAY"]
+    stickers_per_pack = current_app.config["STICKERS_PER_PACK"]
+
+    abertos_hoje = get_packs_opened_today(current_user.id, db)
+    if abertos_hoje >= packs_per_day:
+        restantes = max(0, packs_per_day - abertos_hoje)
+        return jsonify({
+            "success": False,
+            "error": "Limite diário atingido. Volte amanhã!",
+            "packs_remaining": restantes,
+        }), 429
+
+    possuidas_antes = db.execute(
+        "SELECT sticker_id FROM user_stickers WHERE user_id = ?",
+        (current_user.id,),
+    ).fetchall()
+    ids_antes = {r["sticker_id"] for r in possuidas_antes}
+
+    sorteadas = draw_stickers(db, stickers_per_pack)
+
+    ids_sorteados = [s["id"] for s in sorteadas]
+    award_stickers(current_user.id, ids_sorteados, db)
+    record_pack_opening(current_user.id, ids_sorteados, db)
+
+    resultado = []
+    vistos_neste_pacote = set()
+    for s in sorteadas:
+        is_new = s["id"] not in ids_antes and s["id"] not in vistos_neste_pacote
+        vistos_neste_pacote.add(s["id"])
+        resultado.append({
+            "id":          s["id"],
+            "player_name": s["player_name"],
+            "country":     s["country"],
+            "rarity":      s["rarity"],
+            "is_new":      is_new,
+        })
+
+    restantes = max(0, packs_per_day - abertos_hoje - 1)
+    return jsonify({
+        "success":         True,
+        "stickers":        resultado,
+        "packs_remaining": restantes,
+    })
