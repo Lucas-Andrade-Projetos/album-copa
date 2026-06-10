@@ -3,6 +3,47 @@
 {% block title %}Meu Álbum — Copa do Mundo{% endblock %}
 
 {% block content %}
-<h1>Meu Álbum</h1>
-<p>Em breve: suas figurinhas aparecerão aqui. (Passo 4)</p>
+<div class="album-header">
+    <h1>Meu Álbum</h1>
+
+    <div class="progress-wrap">
+        <div class="progress-info">
+            <span>{{ obtidas }} de {{ total }} figurinhas</span>
+            <span class="progress-percent">{{ percent }}%</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width: {{ percent }}%"></div>
+        </div>
+    </div>
+
+    {% if percent == 100 %}
+    <div class="album-completo">
+        🏆 Parabéns! Álbum completo!
+    </div>
+    {% endif %}
+</div>
+
+<div class="sticker-grid">
+    {% for sticker in stickers %}
+        {% set qty = owned.get(sticker.id, 0) %}
+        <div class="sticker-card {% if qty > 0 %}card-obtida rarity-{{ sticker.rarity }}{% else %}card-vazia{% endif %}">
+
+            <div class="sticker-number">#{{ sticker.number }}</div>
+
+            {% if qty > 0 %}
+                <div class="sticker-rarity rarity-label-{{ sticker.rarity }}">
+                    {{ sticker.rarity | upper }}
+                </div>
+                <div class="sticker-name">{{ sticker.player_name }}</div>
+                <div class="sticker-country">{{ sticker.country }}</div>
+                {% if qty > 1 %}
+                    <div class="sticker-duplicata">×{{ qty }}</div>
+                {% endif %}
+            {% else %}
+                <div class="sticker-desconhecida">?</div>
+            {% endif %}
+
+        </div>
+    {% endfor %}
+</div>
 {% endblock %}

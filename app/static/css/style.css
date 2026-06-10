@@ -170,3 +170,128 @@ h1 {
     font-size: 1.75rem;
     margin-bottom: 1rem;
 }
+
+/* ── Álbum: cabeçalho e barra de progresso ── */
+.album-header {
+    margin-bottom: 2rem;
+}
+
+.progress-wrap {
+    margin-top: 1rem;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: var(--cor-texto-suave);
+    margin-bottom: 0.4rem;
+}
+
+.progress-percent {
+    font-weight: 700;
+    color: var(--cor-primaria);
+}
+
+.progress-bar-bg {
+    background-color: var(--cor-borda);
+    border-radius: 999px;
+    height: 10px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    background-color: var(--cor-primaria);
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.4s ease;
+}
+
+.album-completo {
+    margin-top: 1rem;
+    background-color: rgba(245, 166, 35, 0.15);
+    border: 1px solid var(--cor-primaria);
+    border-radius: var(--raio);
+    padding: 0.75rem 1rem;
+    color: var(--cor-primaria);
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+/* ── Grid de figurinhas ── */
+.sticker-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+}
+
+.sticker-card {
+    border-radius: var(--raio);
+    border: 1px solid var(--cor-borda);
+    padding: 1rem 0.75rem;
+    text-align: center;
+    position: relative;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+}
+
+/* Card vazio (figurinha não obtida) */
+.card-vazia {
+    background-color: var(--cor-superficie);
+    opacity: 0.5;
+}
+
+.sticker-desconhecida {
+    font-size: 3rem;
+    color: var(--cor-borda);
+    line-height: 1;
+}
+
+/* Card obtido */
+.card-obtida {
+    background-color: var(--cor-superficie);
+}
+
+.sticker-number {
+    position: absolute;
+    top: 0.4rem;
+    left: 0.6rem;
+    font-size: 0.7rem;
+    color: var(--cor-texto-suave);
+}
+
+.sticker-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--cor-texto);
+}
+
+.sticker-country {
+    font-size: 0.8rem;
+    color: var(--cor-texto-suave);
+}
+
+.sticker-duplicata {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.6rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    background-color: var(--cor-primaria);
+    color: #000;
+    border-radius: 999px;
+    padding: 0.1rem 0.4rem;
+}
+
+/* ── Cores por raridade ── */
+.rarity-label-common    { font-size: 0.65rem; color: var(--cor-texto-suave); }
+.rarity-label-rare      { font-size: 0.65rem; color: #64b5f6; }
+.rarity-label-legendary { font-size: 0.65rem; color: var(--cor-primaria); font-weight: 700; }
+
+.rarity-rare      { border-color: #64b5f6; }
+.rarity-legendary { border-color: var(--cor-primaria); box-shadow: 0 0 10px rgba(245,166,35,0.3); }
