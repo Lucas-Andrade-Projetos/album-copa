@@ -14,6 +14,7 @@
             {% if current_user.is_authenticated %}
                 <span class="navbar-user">Olá, {{ current_user.username }}</span>
                 <a href="{{ url_for('stickers.album') }}">Meu Álbum</a>
+                <a href="{{ url_for('stickers.pack') }}">Abrir Pacote</a>
                 {% if current_user.is_admin %}
                     <a href="#">Admin</a>
                 {% endif %}

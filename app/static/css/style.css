@@ -295,3 +295,149 @@ h1 {
 
 .rarity-rare      { border-color: #64b5f6; }
 .rarity-legendary { border-color: var(--cor-primaria); box-shadow: 0 0 10px rgba(245,166,35,0.3); }
+
+/* ── Página de pacote ── */
+.pack-page {
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.pack-contador {
+    margin: 1rem 0;
+    color: var(--cor-texto-suave);
+    font-size: 1rem;
+}
+
+.btn-pack {
+    font-size: 1.2rem;
+    padding: 0.9rem 2.5rem;
+    width: auto;
+    margin-bottom: 2rem;
+}
+
+.btn-pack:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.pack-resultado {
+    margin-top: 1rem;
+}
+
+.pack-resultado h2 {
+    margin-bottom: 1.25rem;
+    color: var(--cor-primaria);
+}
+
+.pack-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.btn-ver-album {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.6rem 1.5rem;
+    background-color: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+    color: var(--cor-texto);
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+}
+
+.btn-ver-album:hover {
+    border-color: var(--cor-primaria);
+    text-decoration: none;
+}
+
+/* ── Animação de virar carta ── */
+.pack-card-flip {
+    width: 130px;
+    height: 170px;
+    perspective: 800px;
+    cursor: default;
+}
+
+.pack-card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease;
+    border-radius: var(--raio);
+}
+
+.pack-card-flip.virada .pack-card-inner {
+    transform: rotateY(180deg);
+}
+
+.pack-card-frente,
+.pack-card-verso {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: var(--raio);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    border: 1px solid var(--cor-borda);
+    padding: 0.75rem;
+}
+
+.pack-card-frente {
+    background-color: var(--cor-superficie);
+}
+
+.pack-card-verso {
+    background-color: var(--cor-superficie);
+    transform: rotateY(180deg);
+    position: relative;
+}
+
+.pack-card-interrogacao {
+    font-size: 3.5rem;
+    color: var(--cor-borda);
+}
+
+.pack-card-nome {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.pack-card-pais {
+    font-size: 0.8rem;
+    color: var(--cor-texto-suave);
+}
+
+.pack-card-rarity {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.badge-nova {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.4rem;
+    background-color: var(--cor-primaria);
+    color: #000;
+    font-size: 0.6rem;
+    font-weight: 800;
+    padding: 0.15rem 0.4rem;
+    border-radius: 999px;
+}
+
+.pack-card-flip.rarity-rare .pack-card-verso  { border-color: #64b5f6; }
+.pack-card-flip.rarity-legendary .pack-card-verso {
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 14px rgba(245,166,35,0.4);
+}

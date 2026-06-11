@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Abrir Pacote — Copa do Mundo{% endblock %}
+
+{% block content %}
+<div class="pack-page">
+    <h1>Abrir Pacote</h1>
+
+    <div class="pack-contador">
+        <span id="packs-restantes">{{ packs_remaining }}</span> pacote{{ 's' if packs_remaining != 1 }} restante{{ 's' if packs_remaining != 1 }} hoje
+    </div>
+
+    <button id="btn-abrir" class="btn-primary btn-pack"
+            {% if packs_remaining == 0 %}disabled{% endif %}>
+        {% if packs_remaining > 0 %}
+            ⚽ Abrir Pacote
+        {% else %}
+            Volte amanhã!
+        {% endif %}
+    </button>
+
+    <div id="resultado" class="pack-resultado" style="display:none;">
+        <h2>Suas figurinhas</h2>
+        <div id="cards-container" class="pack-cards"></div>
+        <a href="{{ url_for('stickers.album') }}" class="btn-ver-album">Ver meu álbum →</a>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/pack.js') }}"></script>
+{% endblock %}

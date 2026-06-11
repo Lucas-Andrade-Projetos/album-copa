@@ -7,6 +7,16 @@ from flask import current_app
 bp = Blueprint("stickers", __name__)
 
 
+@bp.route("/pack")
+@login_required
+def pack():
+    db = get_db()
+    packs_per_day = current_app.config["PACKS_PER_DAY"]
+    abertos_hoje  = get_packs_opened_today(current_user.id, db)
+    restantes     = max(0, packs_per_day - abertos_hoje)
+    return render_template("open_pack.html", packs_remaining=restantes)
+
+
 @bp.route("/album")
 @login_required
 def album():
