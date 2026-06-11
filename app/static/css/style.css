@@ -204,7 +204,59 @@ h1 {
     background-color: var(--cor-primaria);
     height: 100%;
     border-radius: 999px;
-    transition: width 0.4s ease;
+    transition: width 0.6s ease;
+}
+
+.dup-badge {
+    background-color: var(--cor-borda);
+    color: var(--cor-texto-suave);
+    font-size: 0.72rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+}
+
+/* ── Overlay de álbum completo ── */
+.overlay-completo {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(10, 22, 40, 0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: opacity 0.3s ease;
+}
+
+.overlay-completo.oculto {
+    display: none;
+}
+
+.overlay-conteudo {
+    background-color: var(--cor-superficie);
+    border: 2px solid var(--cor-primaria);
+    border-radius: var(--raio);
+    padding: 3rem 2.5rem;
+    text-align: center;
+    max-width: 400px;
+    box-shadow: 0 0 40px rgba(245, 166, 35, 0.3);
+}
+
+.overlay-trofeu {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.overlay-conteudo h2 {
+    font-size: 1.75rem;
+    color: var(--cor-primaria);
+    margin-bottom: 0.5rem;
+}
+
+.overlay-conteudo p {
+    color: var(--cor-texto-suave);
+    margin-bottom: 1.5rem;
 }
 
 .album-completo {

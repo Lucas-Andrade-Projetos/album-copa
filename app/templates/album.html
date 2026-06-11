@@ -3,24 +3,34 @@
 {% block title %}Meu Álbum — Copa do Mundo{% endblock %}
 
 {% block content %}
+
+<!-- Overlay de álbum completo (oculto por padrão, JS exibe se necessário) -->
+<div id="overlay-completo" class="overlay-completo oculto">
+    <div class="overlay-conteudo">
+        <div class="overlay-trofeu">🏆</div>
+        <h2>Álbum Completo!</h2>
+        <p>Parabéns! Você colou todas as figurinhas!</p>
+        <button onclick="document.getElementById('overlay-completo').classList.add('oculto')" class="btn-primary" style="width:auto; padding: 0.6rem 2rem;">
+            Ver álbum
+        </button>
+    </div>
+</div>
+
 <div class="album-header">
     <h1>Meu Álbum</h1>
 
     <div class="progress-wrap">
         <div class="progress-info">
-            <span>{{ obtidas }} de {{ total }} figurinhas</span>
-            <span class="progress-percent">{{ percent }}%</span>
+            <span>
+                <span id="progress-texto">{{ obtidas }} de {{ total }} figurinhas</span>
+                <span id="dup-badge" class="dup-badge" style="display:none;"></span>
+            </span>
+            <span id="progress-percent" class="progress-percent">{{ percent }}%</span>
         </div>
         <div class="progress-bar-bg">
-            <div class="progress-bar-fill" style="width: {{ percent }}%"></div>
+            <div id="progress-fill" class="progress-bar-fill" style="width: {{ percent }}%"></div>
         </div>
     </div>
-
-    {% if percent == 100 %}
-    <div class="album-completo">
-        🏆 Parabéns! Álbum completo!
-    </div>
-    {% endif %}
 </div>
 
 <div class="sticker-grid">
@@ -46,4 +56,6 @@
         </div>
     {% endfor %}
 </div>
+
+<script src="{{ url_for('static', filename='js/album.js') }}"></script>
 {% endblock %}

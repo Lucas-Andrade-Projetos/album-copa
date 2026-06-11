@@ -17,6 +17,29 @@ def pack():
     return render_template("open_pack.html", packs_remaining=restantes)
 
 
+@bp.route("/api/album/status")
+@login_required
+def album_status():
+    db = get_db()
+    total = db.execute("SELECT COUNT(*) as n FROM stickers").fetchone()["n"]
+    obtidas = db.execute(
+        "SELECT COUNT(*) as n FROM user_stickers WHERE user_id = ?",
+        (current_user.id,),
+    ).fetchone()["n"]
+    duplicatas = db.execute(
+        "SELECT SUM(quantity - 1) as n FROM user_stickers WHERE user_id = ? AND quantity > 1",
+        (current_user.id,),
+    ).fetchone()["n"] or 0
+    percent = round((obtidas / total) * 100) if total > 0 else 0
+    return jsonify({
+        "owned":       obtidas,
+        "total":       total,
+        "percent":     percent,
+        "complete":    obtidas >= total,
+        "duplicates":  duplicatas,
+    })
+
+
 @bp.route("/album")
 @login_required
 def album():
