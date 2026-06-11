@@ -24,8 +24,9 @@ def create_app():
     def load_user(user_id):
         return User.get(user_id)
 
-    from . import auth, stickers
+    from . import auth, stickers, admin
     app.register_blueprint(auth.bp)
     app.register_blueprint(stickers.bp)
+    app.register_blueprint(admin.bp)
 
     return app

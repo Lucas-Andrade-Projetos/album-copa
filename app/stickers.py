@@ -79,7 +79,7 @@ def pack_open():
     ).fetchall()
     ids_antes = {r["sticker_id"] for r in possuidas_antes}
 
-    sorteadas = draw_stickers(db, stickers_per_pack)
+    sorteadas = draw_stickers(db, stickers_per_pack, user_id=current_user.id)
 
     ids_sorteados = [s["id"] for s in sorteadas]
     award_stickers(current_user.id, ids_sorteados, db)

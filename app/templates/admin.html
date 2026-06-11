@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% block title %}Painel Admin{% endblock %}
+
+{% block content %}
+<h1>Painel Admin</h1>
+
+<div class="admin-grid">
+
+    <!-- Coluna esquerda: ações -->
+    <div class="admin-acoes">
+
+        <div class="admin-card">
+            <h2>Forçar Figurinha no Próximo Pacote</h2>
+            <p class="admin-desc">A figurinha escolhida será garantida no próximo pacote do usuário.</p>
+            <div class="form-group">
+                <label>Usuário</label>
+                <select id="force-user" class="admin-select">
+                    {% for u in usuarios %}
+                        <option value="{{ u.id }}">{{ u.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Figurinha</label>
+                <select id="force-sticker" class="admin-select">
+                    {% for s in stickers %}
+                        <option value="{{ s.id }}">#{{ s.number }} {{ s.player_name }} [{{ s.rarity }}]</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button class="btn-admin" onclick="acao('/admin/api/force-sticker', {user_id: +selVal('force-user'), sticker_id: +selVal('force-sticker')})">
+                Forçar no próximo pacote
+            </button>
+        </div>
+
+        <div class="admin-card">
+            <h2>Conceder Figurinha Direto</h2>
+            <p class="admin-desc">Adiciona a figurinha imediatamente ao álbum do usuário.</p>
+            <div class="form-group">
+                <label>Usuário</label>
+                <select id="grant-user" class="admin-select">
+                    {% for u in usuarios %}
+                        <option value="{{ u.id }}">{{ u.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Figurinha</label>
+                <select id="grant-sticker" class="admin-select">
+                    {% for s in stickers %}
+                        <option value="{{ s.id }}">#{{ s.number }} {{ s.player_name }} [{{ s.rarity }}]</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button class="btn-admin btn-admin-verde" onclick="acao('/admin/api/grant-sticker', {user_id: +selVal('grant-user'), sticker_id: +selVal('grant-sticker')})">
+                Conceder figurinha
+            </button>
+        </div>
+
+        <div class="admin-card">
+            <h2>Resetar Limite Diário</h2>
+            <p class="admin-desc">Zera os pacotes abertos hoje, liberando os 5 pacotes novamente.</p>
+            <div class="form-group">
+                <label>Usuário</label>
+                <select id="reset-user" class="admin-select">
+                    {% for u in usuarios %}
+                        <option value="{{ u.id }}">{{ u.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button class="btn-admin btn-admin-amarelo" onclick="acao('/admin/api/reset-daily', {user_id: +selVal('reset-user')})">
+                Resetar limite
+            </button>
+        </div>
+
+        <div class="admin-card">
+            <h2>Limpar Álbum</h2>
+            <p class="admin-desc">Remove todas as figurinhas do álbum do usuário. Irreversível!</p>
+            <div class="form-group">
+                <label>Usuário</label>
+                <select id="clear-user" class="admin-select">
+                    {% for u in usuarios %}
+                        <option value="{{ u.id }}">{{ u.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button class="btn-admin btn-admin-vermelho" onclick="confirmarLimpar()">
+                Limpar álbum
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Coluna direita: ranking de usuários -->
+    <div class="admin-usuarios">
+        <h2>Usuários</h2>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Usuário</th>
+                    <th>Figurinhas</th>
+                    <th>Progresso</th>
+                    <th>Pacotes hoje</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in stats %}
+                <tr>
+                    <td>{{ s.username }}</td>
+                    <td>{{ s.obtidas }}/{{ s.total }}</td>
+                    <td>
+                        <div class="mini-progress">
+                            <div class="mini-progress-fill" style="width: {{ s.percent }}%"></div>
+                        </div>
+                        {{ s.percent }}%
+                    </td>
+                    <td>{{ s.pacotes_hoje }}/{{ config.PACKS_PER_DAY }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div id="admin-feedback" class="admin-feedback" style="display:none;"></div>
+
+<script>
+function selVal(id) {
+    return document.getElementById(id).value;
+}
+
+async function acao(url, body) {
+    const fb = document.getElementById("admin-feedback");
+    fb.style.display = "none";
+
+    try {
+        const r = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+        });
+        const d = await r.json();
+        fb.textContent = d.message || d.error;
+        fb.className   = "admin-feedback " + (d.success ? "feedback-ok" : "feedback-erro");
+        fb.style.display = "block";
+    } catch(e) {
+        fb.textContent = "Erro de conexão.";
+        fb.className   = "admin-feedback feedback-erro";
+        fb.style.display = "block";
+    }
+}
+
+function confirmarLimpar() {
+    const user = document.getElementById("clear-user");
+    const nome = user.options[user.selectedIndex].text;
+    if (confirm(`Limpar TODO o álbum de "${nome}"? Esta ação é irreversível.`)) {
+        acao("/admin/api/clear-album", { user_id: +user.value });
+    }
+}
+</script>
+{% endblock %}
