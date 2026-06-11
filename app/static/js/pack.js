@@ -58,9 +58,20 @@ function atualizarContador(restantes) {
     }
 }
 
+const spinner = document.getElementById("spinner-btn");
+
+function setCarregando(sim) {
+    btnAbrir.disabled = sim;
+    if (spinner) spinner.style.display = sim ? "inline-block" : "none";
+    if (sim) {
+        btnAbrir.dataset.textoOriginal = btnAbrir.textContent;
+        btnAbrir.textContent = " Abrindo...";
+        if (spinner) btnAbrir.prepend(spinner);
+    }
+}
+
 btnAbrir.addEventListener("click", async () => {
-    btnAbrir.disabled = true;
-    btnAbrir.textContent = "Abrindo...";
+    setCarregando(true);
 
     try {
         const resposta = await fetch("/api/pack/open", { method: "POST" });
@@ -71,15 +82,16 @@ btnAbrir.addEventListener("click", async () => {
             atualizarContador(dados.packs_remaining);
 
             if (dados.packs_remaining > 0) {
-                btnAbrir.disabled = false;
+                setCarregando(false);
                 btnAbrir.textContent = "⚽ Abrir Pacote";
             }
         } else {
+            if (spinner) spinner.style.display = "none";
             btnAbrir.textContent = "Volte amanhã!";
             packsRestEl.textContent = "0";
         }
     } catch (erro) {
-        btnAbrir.disabled = false;
+        setCarregando(false);
         btnAbrir.textContent = "⚽ Abrir Pacote";
         alert("Erro de conexão. Tente novamente.");
     }

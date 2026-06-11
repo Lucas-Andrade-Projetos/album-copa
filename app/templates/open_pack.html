@@ -12,11 +12,8 @@
 
     <button id="btn-abrir" class="btn-primary btn-pack"
             {% if packs_remaining == 0 %}disabled{% endif %}>
-        {% if packs_remaining > 0 %}
-            ⚽ Abrir Pacote
-        {% else %}
-            Volte amanhã!
-        {% endif %}
+        <span id="spinner-btn" class="spinner" style="display:none;"></span>
+        {% if packs_remaining > 0 %}⚽ Abrir Pacote{% else %}Volte amanhã!{% endif %}
     </button>
 
     <div id="resultado" class="pack-resultado" style="display:none;">

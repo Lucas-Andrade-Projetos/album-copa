@@ -40,11 +40,17 @@ a:hover {
 .navbar {
     background-color: var(--cor-superficie);
     border-bottom: 2px solid var(--cor-primaria);
-    padding: 0.75rem 2rem;
+    padding: 0.75rem 1.25rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 520px) {
+    .navbar-links { gap: 0.9rem; font-size: 0.88rem; }
+    .navbar-user  { display: none; }
 }
 
 .navbar-brand {
@@ -611,3 +617,54 @@ h1 {
 
 .feedback-ok   { background-color: var(--cor-sucesso); color: #fff; }
 .feedback-erro { background-color: var(--cor-erro);    color: #fff; }
+
+/* ── Spinner de carregamento ── */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.spinner {
+    width:  16px;
+    height: 16px;
+    border: 2px solid rgba(0,0,0,0.25);
+    border-top-color: #000;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.4rem;
+}
+
+/* ── Páginas de erro ── */
+.erro-page {
+    text-align: center;
+    padding: 4rem 1rem;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.erro-codigo {
+    font-size: 6rem;
+    font-weight: 900;
+    color: var(--cor-primaria);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.erro-titulo {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.erro-desc {
+    color: var(--cor-texto-suave);
+    margin-bottom: 2rem;
+}
+
+/* ── Responsividade geral ── */
+@media (max-width: 600px) {
+    .container    { padding: 0 1rem; }
+    .form-card    { padding: 1.5rem 1.25rem; }
+    h1            { font-size: 1.4rem; }
+    .album-header { margin-bottom: 1.25rem; }
+}
