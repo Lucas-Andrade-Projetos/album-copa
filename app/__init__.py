@@ -1,6 +1,9 @@
 import os
+import warnings
 from flask import Flask, render_template
 from flask_login import LoginManager
+
+_DEV_SECRET = "dev-secret-troque-em-producao"
 
 
 def create_app():
@@ -8,6 +11,13 @@ def create_app():
     app.config.from_pyfile("../config.py")
 
     os.makedirs(app.instance_path, exist_ok=True)
+
+    if app.config["SECRET_KEY"] == _DEV_SECRET:
+        warnings.warn(
+            "FLASK_SECRET_KEY está com o valor padrão inseguro. "
+            "Defina a variável de ambiente FLASK_SECRET_KEY antes de publicar o site.",
+            stacklevel=2,
+        )
 
     from . import database
     database.init_app(app)
