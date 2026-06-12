@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Ranking — Álbum Copa do Mundo{% endblock %}
+
+{% block content %}
+<div class="leaderboard-page">
+    <h1>Ranking do Álbum</h1>
+    <p class="leaderboard-subtitulo">Quem está mais perto de completar a Copa?</p>
+
+    {% if ranking %}
+    <table class="leaderboard-table">
+        <thead>
+            <tr>
+                <th class="col-pos">#</th>
+                <th>Jogador</th>
+                <th class="col-fig">Figurinhas</th>
+                <th class="col-prog">Progresso</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in ranking %}
+            <tr class="{{ 'leaderboard-eu' if r.eu }}">
+                <td class="col-pos leaderboard-medalha">
+                    {% if r.pos == 1 %}🥇
+                    {% elif r.pos == 2 %}🥈
+                    {% elif r.pos == 3 %}🥉
+                    {% else %}{{ r.pos }}
+                    {% endif %}
+                </td>
+                <td>
+                    {{ r.username }}
+                    {% if r.eu %}<span class="badge-eu">você</span>{% endif %}
+                    {% if r.percent == 100 %}<span class="badge-completo">Completo!</span>{% endif %}
+                </td>
+                <td class="col-fig">{{ r.obtidas }}/{{ r.total }}</td>
+                <td class="col-prog">
+                    <div class="lb-progress-wrap">
+                        <div class="lb-progress-bar">
+                            <div class="lb-progress-fill" style="width: {{ r.percent }}%"></div>
+                        </div>
+                        <span class="lb-percent">{{ r.percent }}%</span>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="leaderboard-vazio">Nenhum usuário cadastrado ainda.</p>
+    {% endif %}
+</div>
+{% endblock %}

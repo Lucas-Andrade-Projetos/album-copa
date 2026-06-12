@@ -666,10 +666,119 @@ h1 {
     margin-bottom: 2rem;
 }
 
+/* ── Leaderboard ── */
+.leaderboard-page {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+.leaderboard-subtitulo {
+    color: var(--cor-texto-suave);
+    margin-bottom: 1.75rem;
+}
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.leaderboard-table th {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    color: var(--cor-texto-suave);
+    font-weight: 600;
+    border-bottom: 2px solid var(--cor-borda);
+}
+
+.leaderboard-table td {
+    padding: 0.7rem 0.75rem;
+    border-bottom: 1px solid var(--cor-borda);
+    vertical-align: middle;
+}
+
+.leaderboard-table tr:hover td {
+    background-color: rgba(255,255,255,0.03);
+}
+
+.leaderboard-eu td {
+    background-color: rgba(245, 166, 35, 0.07);
+}
+
+.leaderboard-medalha {
+    font-size: 1.25rem;
+    text-align: center;
+}
+
+.col-pos  { width: 52px; }
+.col-fig  { width: 90px; text-align: center; color: var(--cor-texto-suave); }
+.col-prog { width: 180px; }
+
+.badge-eu {
+    display: inline-block;
+    background-color: var(--cor-primaria);
+    color: #000;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.1rem 0.45rem;
+    border-radius: 999px;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+    text-transform: uppercase;
+}
+
+.badge-completo {
+    display: inline-block;
+    background-color: var(--cor-sucesso);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.1rem 0.45rem;
+    border-radius: 999px;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+}
+
+.lb-progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.lb-progress-bar {
+    flex: 1;
+    height: 8px;
+    background-color: var(--cor-borda);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.lb-progress-fill {
+    height: 100%;
+    background-color: var(--cor-primaria);
+    border-radius: 999px;
+    transition: width 0.4s ease;
+}
+
+.lb-percent {
+    font-size: 0.82rem;
+    color: var(--cor-texto-suave);
+    min-width: 38px;
+    text-align: right;
+}
+
+.leaderboard-vazio {
+    color: var(--cor-texto-suave);
+    text-align: center;
+    padding: 2rem;
+}
+
 /* ── Responsividade geral ── */
 @media (max-width: 600px) {
     .container    { padding: 0 1rem; }
     .form-card    { padding: 1.5rem 1.25rem; }
     h1            { font-size: 1.4rem; }
     .album-header { margin-bottom: 1.25rem; }
+    .col-prog     { width: 120px; }
+    .lb-percent   { display: none; }
 }

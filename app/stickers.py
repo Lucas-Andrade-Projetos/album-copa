@@ -80,6 +80,35 @@ def pack_remaining():
     return jsonify({"packs_remaining": restantes, "packs_per_day": packs_per_day})
 
 
+@bp.route("/leaderboard")
+@login_required
+def leaderboard():
+    db = get_db()
+    total = db.execute("SELECT COUNT(*) as n FROM stickers").fetchone()["n"]
+
+    rows = db.execute(
+        "SELECT u.id, u.username, COUNT(us.sticker_id) as obtidas"
+        " FROM users u"
+        " LEFT JOIN user_stickers us ON us.user_id = u.id"
+        " GROUP BY u.id"
+        " ORDER BY obtidas DESC, u.username ASC",
+    ).fetchall()
+
+    ranking = []
+    for pos, row in enumerate(rows, start=1):
+        percent = round((row["obtidas"] / total) * 100) if total > 0 else 0
+        ranking.append({
+            "pos":      pos,
+            "username": row["username"],
+            "obtidas":  row["obtidas"],
+            "total":    total,
+            "percent":  percent,
+            "eu":       row["id"] == current_user.id,
+        })
+
+    return render_template("leaderboard.html", ranking=ranking)
+
+
 @bp.route("/api/pack/open", methods=["POST"])
 @login_required
 def pack_open():
