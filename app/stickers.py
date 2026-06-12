@@ -90,6 +90,7 @@ def leaderboard():
         "SELECT u.id, u.username, COUNT(us.sticker_id) as obtidas"
         " FROM users u"
         " LEFT JOIN user_stickers us ON us.user_id = u.id"
+        " WHERE u.is_admin = 0"
         " GROUP BY u.id"
         " ORDER BY obtidas DESC, u.username ASC",
     ).fetchall()
