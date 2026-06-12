@@ -143,6 +143,38 @@ def reset_daily():
     })
 
 
+@bp.route("/api/add-sticker", methods=["POST"])
+@login_required
+@admin_required
+def add_sticker():
+    data        = request.get_json()
+    player_name = (data.get("player_name") or "").strip()
+    country     = (data.get("country") or "").strip()
+    rarity      = data.get("rarity", "common")
+
+    if not player_name or not country:
+        return jsonify({"success": False, "error": "Nome do jogador e país são obrigatórios"}), 400
+
+    if rarity not in ("common", "rare", "legendary"):
+        return jsonify({"success": False, "error": "Raridade inválida"}), 400
+
+    db = get_db()
+    row = db.execute("SELECT MAX(number) as max_n FROM stickers").fetchone()
+    next_number = (row["max_n"] or 0) + 1
+
+    db.execute(
+        "INSERT INTO stickers (number, player_name, country, rarity) VALUES (?, ?, ?, ?)",
+        (next_number, player_name, country, rarity),
+    )
+    db.commit()
+
+    return jsonify({
+        "success":  True,
+        "message":  f"Figurinha #{next_number} '{player_name}' adicionada! A página vai recarregar.",
+        "reload":   True,
+    })
+
+
 @bp.route("/api/clear-album", methods=["POST"])
 @login_required
 @admin_required

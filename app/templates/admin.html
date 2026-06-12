@@ -10,6 +10,30 @@
     <div class="admin-acoes">
 
         <div class="admin-card">
+            <h2>Adicionar Nova Figurinha</h2>
+            <p class="admin-desc">A figurinha aparece no álbum de todos os usuários imediatamente.</p>
+            <div class="form-group">
+                <label>Nome do Jogador</label>
+                <input id="new-player" type="text" class="admin-input" placeholder="Ex: Neymar Jr">
+            </div>
+            <div class="form-group">
+                <label>País</label>
+                <input id="new-country" type="text" class="admin-input" placeholder="Ex: Brasil">
+            </div>
+            <div class="form-group">
+                <label>Raridade</label>
+                <select id="new-rarity" class="admin-select">
+                    <option value="common">Comum (70%)</option>
+                    <option value="rare">Raro (25%)</option>
+                    <option value="legendary">Lendário (5%)</option>
+                </select>
+            </div>
+            <button class="btn-admin btn-admin-verde" onclick="adicionarFigurinha()">
+                Adicionar figurinha
+            </button>
+        </div>
+
+        <div class="admin-card">
             <h2>Forçar Figurinha no Próximo Pacote</h2>
             <p class="admin-desc">A figurinha escolhida será garantida no próximo pacote do usuário.</p>
             <div class="form-group">
@@ -144,11 +168,26 @@ async function acao(url, body) {
         fb.textContent = d.message || d.error;
         fb.className   = "admin-feedback " + (d.success ? "feedback-ok" : "feedback-erro");
         fb.style.display = "block";
+        if (d.reload) setTimeout(() => window.location.reload(), 1200);
     } catch(e) {
         fb.textContent = "Erro de conexão.";
         fb.className   = "admin-feedback feedback-erro";
         fb.style.display = "block";
     }
+}
+
+function adicionarFigurinha() {
+    const player_name = document.getElementById("new-player").value.trim();
+    const country     = document.getElementById("new-country").value.trim();
+    const rarity      = document.getElementById("new-rarity").value;
+    if (!player_name || !country) {
+        const fb = document.getElementById("admin-feedback");
+        fb.textContent = "Preencha o nome do jogador e o país.";
+        fb.className   = "admin-feedback feedback-erro";
+        fb.style.display = "block";
+        return;
+    }
+    acao("/admin/api/add-sticker", { player_name, country, rarity });
 }
 
 function confirmarLimpar() {

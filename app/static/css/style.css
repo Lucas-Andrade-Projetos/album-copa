@@ -532,7 +532,8 @@ h1 {
     margin-bottom: 0.9rem;
 }
 
-.admin-select {
+.admin-select,
+.admin-input {
     width: 100%;
     background-color: var(--cor-fundo);
     border: 1px solid var(--cor-borda);
@@ -540,6 +541,10 @@ h1 {
     color: var(--cor-texto);
     font-size: 0.9rem;
     padding: 0.5rem 0.7rem;
+}
+
+.admin-input::placeholder {
+    color: var(--cor-texto-suave);
 }
 
 .btn-admin {
